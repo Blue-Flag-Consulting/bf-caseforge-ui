@@ -12,8 +12,9 @@ It is meant to be forked, cloned, and copied so folks can play around with the A
 1. Clone or fork the repo
 2. Run `npm i`
 3. Create an `.env` file in root and add your [Open AI API key](https://platform.openai.com/account/api-keys) to it (this file is not tracked)
-```javaScript
-OPENAI_API_KEY=superSecretAPIKey
+```
+MODEL_ARN=arn:aws:bedrock:us-east-1:383040053919:inference-profile/us.anthropic.claude-3-5-sonnet-20241022-v2:0
+KNOWLEDGE_BASE_ID=ABCD1234
 ```
 4. Run `npm run dev`
 5. Open in your browser `http://localhost:3000/`
