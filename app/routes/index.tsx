@@ -339,8 +339,8 @@ export default function IndexPage() {
         {chatHistory.length === 0 && (
           <div className="intro grid place-items-center h-full text-center">
             <div className="intro-content">
-              <h1 className="text-4xl font-semibold">OpenAI base</h1>
-              <p className="mt-4">Ask anything 😊</p>
+              <h1 className="text-4xl font-semibold">Caseforge AI</h1>
+              <p className="mt-4">Your friendly legal assistant</p>
             </div>
           </div>
         )}
