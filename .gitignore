@@ -11,3 +11,6 @@ node_modules
 /api/index.js.map
 
 /config.js
+.aws_profile
+api/metafile.js.json
+api/metafile.server.json
