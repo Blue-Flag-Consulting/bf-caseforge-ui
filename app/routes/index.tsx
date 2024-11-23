@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useCallback, useState } from "react";
 import {
   BedrockAgentRuntimeClient,
+  Citation,
   RetrieveAndGenerateCommand,
   RetrieveAndGenerateCommandInput,
 } from "@aws-sdk/client-bedrock-agent-runtime";
@@ -22,12 +23,14 @@ import Message from "~/components/Message";
 export interface ReturnedDataProps {
   message?: string;
   answer: string;
+  citations?: Citation[];
   error?: string;
   sessionId?: string;
 }
 
 export interface ChatHistoryProps {
   content: string;
+  citations?: Citation[];
   role: "user" | "assistant";
   error?: boolean;
 }
@@ -86,17 +89,20 @@ export async function action({
     const command = new RetrieveAndGenerateCommand(input);
     const response = await client.send(command);
     const answer = response.output?.text;
+    const citations = response.citations;
     const newSessionId = response.sessionId || sessionId;
 
     return {
       message: body.get("message") as string,
       answer: answer as string,
+      citations: citations,
       sessionId: newSessionId,
     };
   } catch (error: any) {
     return {
       message: body.get("message") as string,
       answer: "",
+      citations: [],
       error: error.message || "Something went wrong! Please try again.",
       sessionId: sessionId,
     };
@@ -282,6 +288,7 @@ export default function IndexPage() {
     if (data?.answer) {
       const newAnswer = {
         content: data.answer as string,
+        citations: data.citations,
         role: "assistant",
       };
 
@@ -351,6 +358,7 @@ export default function IndexPage() {
                 <Message
                   error={chat.error}
                   content={chat.content}
+                  citations={chat.citations}
                   role={chat.role}
                 />
               </React.Fragment>
