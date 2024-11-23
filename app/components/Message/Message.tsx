@@ -44,19 +44,26 @@ const RenderedCitation = ({
     <div className="mt-2" key={`citation-${index}`}>
       <div className="text-xs font-semibold">Citation {index + 1}</div>
       <div className="text-xs font-semibold">{file}</div>
-      {isExpanded ? (
-        <div className="text-xs">{content}</div>
-      ) : (
-        <div className="text-xs text-gray-500 italic">Content hidden</div>
-      )}
+      {isExpanded && <div className="text-xs">{content}</div>}
       <button
         onClick={() => setIsExpanded((prev) => !prev)}
-        className="text-xs mt-1 text-blue-500 underline"
+        className="text-xs italic text-gray-500"
       >
         {isExpanded ? "Hide content" : "Show content"}
       </button>
     </div>
   );
+};
+
+const renderContent = (content: string, citations?: Citation[]) => {
+  //citations?.forEach(function (citation, i) {
+  //  //const start = citation.generatedResponsePart?.textResponsePart?.span?.start;
+  //  const end = citation.generatedResponsePart?.textResponsePart?.span?.end;
+  //  if (end) {
+  //    content = `${content.slice(0, end)} **[${i + 1}]** ${content.slice(end)}`;
+  //  }
+  //});
+  return content;
 };
 
 /**
@@ -145,15 +152,19 @@ export default function Message({
             </div>
           ) : (
             <>
-              <ReactMarkdown children={content} />
-              {role !== "user" && citations && citations.length > 0 && (
-                <button
-                  onClick={() => setIsExpanded((prev) => !prev)}
-                  className="text-xs mt-2 text-blue-500 underline"
-                >
-                  {isExpanded ? "Hide citations" : "Show citations"}
-                </button>
-              )}
+              <ReactMarkdown children={renderContent(content, citations)} />
+              {role !== "user" &&
+                citations &&
+                citations.length > 0 &&
+                citations[0].retrievedReferences &&
+                citations[0].retrievedReferences.length > 0 && (
+                  <button
+                    onClick={() => setIsExpanded((prev) => !prev)}
+                    className="text-xs mt-2 italic text-gray-500"
+                  >
+                    {isExpanded ? "Hide citations" : "Show citations"}
+                  </button>
+                )}
               {role !== "user" &&
                 citations &&
                 isExpanded &&
